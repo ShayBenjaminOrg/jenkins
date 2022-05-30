@@ -6,7 +6,6 @@ pipeline {
     
     
     stages {
-        def customImage = ""
         stage("create dockerfile") {
             sh """
             tee Dockerfile <<-'EOF'
@@ -17,7 +16,7 @@ EOF
         }
         
         stage("build docker") {
-            customImage = docker.build("shayben/shay-test:latest")
+            docker.build("shayben/shay-test:latest")
         }
         stage("verify dockers") {
             sh "docker images"
