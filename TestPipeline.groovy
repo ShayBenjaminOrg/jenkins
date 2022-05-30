@@ -19,7 +19,8 @@ EOF
         
         stage("build docker") {
             steps {
-                docker.build("shayben/shay-test:latest")
+                sh "docker build -t shayben/shay-test:latest ."
+//                docker.build("shayben/shay-test:latest")
             }
         }
         stage("verify dockers") {
