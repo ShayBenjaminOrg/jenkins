@@ -7,25 +7,35 @@ pipeline {
     
     stages {
         stage("create dockerfile") {
-            sh """
-            tee Dockerfile <<-'EOF'
-            FROM ubuntu:latest
-            RUN touch file-01.txt
+            steps {
+                sh """
+                tee Dockerfile <<-'EOF'
+                FROM ubuntu:latest
+                RUN touch file-01.txt
 EOF
-            """
+                """
+            }
         }
         
         stage("build docker") {
-            docker.build("shayben/shay-test:latest")
+            steps {
+                docker.build("shayben/shay-test:latest")
+            }
         }
         stage("verify dockers") {
-            sh "docker images"
+            steps {
+                sh "docker images"
+            }
         }
         stage("login") {
-            sh 'echo $DOCKERHUB_CREDENTIALS | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
         }
         stage("push") {
-            sh 'docker push shayben/shay-test:latest'
+            steps {
+                sh 'docker push shayben/shay-test:latest'
+            }
         }
     }
     post {
