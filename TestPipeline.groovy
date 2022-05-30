@@ -8,4 +8,10 @@ node("linux") {
 EOF
         """
     }
+    stage("build docker") {
+        customImage = docker.build("shay-test")
+    }
+    stage("verify dockers") {
+        sh "docker images"
+    }
 }
