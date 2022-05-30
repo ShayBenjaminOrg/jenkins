@@ -4,8 +4,9 @@ pipeline {
         DOCKERHUB_CREDENTIALS=credentials('DockerhubCreds')
     }
     
-    def customImage = ""
+    
     stages {
+        def customImage = ""
         stage("create dockerfile") {
             sh """
             tee Dockerfile <<-'EOF'
