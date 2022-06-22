@@ -3,6 +3,7 @@ pipeline {
     environment {
         PlayGround = "${env.WORKSPACE}/playground/${env.BUILD_NUMBER}"
     }
+    options { timestamps() }
     stages {
         stage('Clone the repo') {
             steps {
