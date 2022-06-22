@@ -53,7 +53,7 @@ pipeline {
                     echo 'Check website is up'
                     sudo su ec2-user
                     whoami
-                    sudo -u ec2-user ansible all -i 10.0.1.238, -b -m copy -a "src=$PlayGround/webapp/ dest=/var/www/html/"
+                    sudo -u ec2-user ansible all -i 10.0.1.7, -b -m copy -a "src=$PlayGround/webapp/ dest=/var/www/html/"
                     """.stripIndent()
             }
         }
