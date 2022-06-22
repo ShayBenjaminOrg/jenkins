@@ -25,7 +25,10 @@ pipeline {
                 sh "cd '$PlayGround'"
                 echo 'clone the app repo'
                 
-                git credentialsId: 'aws_github_key', url: 'git@github.com:ShayBenjaminOrg/webapp.git'
+//                git credentialsId: 'aws_github_key', url: 'git@github.com:ShayBenjaminOrg/webapp.git'
+                sshagent (credentials: ['aws_github_key']) {
+                    sh("git clone -a git@github.com:ShayBenjaminOrg/webapp.git")
+                }
                 //sh 'git clone https://github.com/shaybenjamin/webapp1.git'
             }
         }
@@ -46,7 +49,10 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building.....'
-                git credentialsId: 'aws_github_key', url: 'git@github.com:ShayBenjaminOrg/ansible.git'
+                //git credentialsId: 'aws_github_key', url: 'git@github.com:ShayBenjaminOrg/ansible.git'
+                sshagent (credentials: ['aws_github_key']) {
+                    sh("git clone -a git@github.com:ShayBenjaminOrg/ansible.git")
+                }
                 //sh 'git clone https://github.com/shaybenjamin/aws_env_dev.git'
                 sh 'pwd'
                 sh "rsync -av --exclude='.*' '${WORKSPACE}'/ansible '$PlayGround'/"
