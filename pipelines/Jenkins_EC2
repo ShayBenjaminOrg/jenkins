@@ -1,36 +1,37 @@
 pipeline {
     agent { node { label 'swarm' } }
-    environment {
-        PlayGround = "${env.WORKSPACE}/playground/${env.BUILD_NUMBER}"
-    }
     options { 
         timestamps()
-        ansiColor('xterm')
+    }
+    environment {
+        PlayGround = "${env.WORKSPACE}/playground/${env.BUILD_NUMBER}"
     }
     stages {
         stage('Clone the repo') {
             steps {
-                echo 'WORKSPACE : env.WORKSPACE'
-                echo "PlayGround : '$PlayGround'"
-                echo "BUILD_NUMBER : '$BUILD_NUMBER'"
-                echo "BUILD_ID : '$BUILD_ID'"
-                echo "BUILD_DISPLAY_NAME : '${BUILD_DISPLAY_NAME}'"
-                echo "JOB_NAME : '${JOB_NAME}'"
-                echo "JOB_BASE_NAME : '${JOB_BASE_NAME}'"
-                echo "BUILD_TAG : ‘${BUILD_TAG}'"
-                echo "EXECUTOR_NUMBER : '${EXECUTOR_NUMBER}'"
-                echo "NODE_NAME : '${NODE_NAME}'"
-                echo "NODE_LABELS : '${NODE_LABELS}'"
-                echo "WORKSPACE : '${WORKSPACE}'"
-                echo "JENKINS_HOME : '${JENKINS_HOME}'"
-                sh 'printenv'
-                sh 'whoami'
-                sh "mkdir -p '$PlayGround'"
-                sh "cd '$PlayGround'"
-                echo 'clone the app repo'
-                
-                sshagent (credentials: ['aws_github_key']) {
-                    sh("git clone git@github.com:ShayBenjaminOrg/webapp.git")
+                ansiColor('xterm'){
+                    echo 'WORKSPACE : env.WORKSPACE'
+                    echo "PlayGround : '$PlayGround'"
+                    echo "BUILD_NUMBER : '$BUILD_NUMBER'"
+                    echo "BUILD_ID : '$BUILD_ID'"
+                    echo "BUILD_DISPLAY_NAME : '${BUILD_DISPLAY_NAME}'"
+                    echo "JOB_NAME : '${JOB_NAME}'"
+                    echo "JOB_BASE_NAME : '${JOB_BASE_NAME}'"
+                    echo "BUILD_TAG : ‘${BUILD_TAG}'"
+                    echo "EXECUTOR_NUMBER : '${EXECUTOR_NUMBER}'"
+                    echo "NODE_NAME : '${NODE_NAME}'"
+                    echo "NODE_LABELS : '${NODE_LABELS}'"
+                    echo "WORKSPACE : '${WORKSPACE}'"
+                    echo "JENKINS_HOME : '${JENKINS_HOME}'"
+                    sh 'printenv'
+                    sh 'whoami'
+                    sh "mkdir -p '$PlayGround'"
+                    sh "cd '$PlayGround'"
+                    echo 'clone the app repo'
+
+                    sshagent (credentials: ['aws_github_key']) {
+                        sh("git clone git@github.com:ShayBenjaminOrg/webapp.git")
+                    }
                 }
             }
         }
