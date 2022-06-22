@@ -3,7 +3,10 @@ pipeline {
     environment {
         PlayGround = "${env.WORKSPACE}/playground/${env.BUILD_NUMBER}"
     }
-    options { timestamps() }
+    options { 
+        timestamps()
+        ansiColor('xterm')
+    }
     stages {
         stage('Clone the repo') {
             steps {
