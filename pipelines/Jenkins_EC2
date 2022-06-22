@@ -25,7 +25,8 @@ pipeline {
                 sh "cd '$PlayGround'"
                 echo 'clone the app repo'
                 
-                sh 'git clone https://github.com/shaybenjamin/webapp1.git'
+                git credentialsId: 'aws_github_key', url: 'git@github.com:ShayBenjaminOrg/webapp.git'
+                //sh 'git clone https://github.com/shaybenjamin/webapp1.git'
             }
         }
         stage('copy repo to playground') {
@@ -33,7 +34,7 @@ pipeline {
                 //sh 'sudo su ec2-user'
                 sh 'whoami'
                 sh 'pwd'
-                sh "rsync -av --exclude='.*' '${WORKSPACE}'/webapp1 '$PlayGround'/"
+                sh "rsync -av --exclude='.*' '${WORKSPACE}'/webapp '$PlayGround'/"
                 
                 //sh "cp -R '${WORKSPACE}'/webapp1 '$PlayGround'/webapp1"
                 
@@ -45,9 +46,10 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building.....'
-                sh 'git clone https://github.com/shaybenjamin/aws_env_dev.git'
+                git credentialsId: 'aws_github_key', url: 'git@github.com:ShayBenjaminOrg/ansible.git'
+                //sh 'git clone https://github.com/shaybenjamin/aws_env_dev.git'
                 sh 'pwd'
-                sh "rsync -av --exclude='.*' '${WORKSPACE}'/aws_env_dev/ansible '$PlayGround'/"
+                sh "rsync -av --exclude='.*' '${WORKSPACE}'/ansible '$PlayGround'/"
                 //sh 'curl -Is 10.0.1.197 | head -n 1'
             }
         }
@@ -57,15 +59,15 @@ pipeline {
                     echo 'Check website is up'
                     sudo su ec2-user
                     whoami
-                    sudo -u ec2-user ansible all -i 10.0.1.222, -b -m copy -a "src=$PlayGround/webapp1/ dest=/var/www/html/"
+                    sudo -u ec2-user ansible all -i 10.0.1.98, -b -m copy -a "src=$PlayGround/webapp/ dest=/var/www/html/"
                     """.stripIndent()
             }
         }
     }
     post {
         always {
-            sh "rm -rf '${WORKSPACE}'/aws_env_dev"
-            sh "rm -rf '${WORKSPACE}'/webapp1"
+            sh "rm -rf '${WORKSPACE}'/ansible"
+            sh "rm -rf '${WORKSPACE}'/webapp"
         }
     }
 }
