@@ -1,11 +1,15 @@
 pipeline {
     agent { node { label 'swarm' } }
+    parameters {
+        string(name: 'web-app-ip', description: 'IP of instance to deploy to', trim: true)
+    }
     options { 
         timestamps()
     }
     environment {
         PlayGround = "${env.WORKSPACE}/playground/${env.BUILD_NUMBER}"
     }
+    
     stages {
         stage('Clone the repo') {
             steps {
@@ -58,7 +62,7 @@ pipeline {
                     echo 'Check website is up'
                     sudo su ec2-user
                     whoami
-                    sudo -u ec2-user ansible all -i 10.0.1.152, -b -m copy -a "src=$PlayGround/webapp/ dest=/var/www/html/"
+                    sudo -u ec2-user ansible all -i ${params.web-app-ip}, -b -m copy -a "src=$PlayGround/webapp/ dest=/var/www/html/"
                     """.stripIndent()
             }
         }
