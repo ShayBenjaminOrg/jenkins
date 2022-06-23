@@ -1,7 +1,7 @@
 pipeline {
     agent { node { label 'swarm' } }
     parameters {
-        string(name: 'web-app-ip', description: 'IP of instance to deploy to', trim: true)
+        string(name: 'web_app_ip', description: 'IP of instance to deploy to', trim: true)
     }
     options { 
         timestamps()
@@ -62,7 +62,7 @@ pipeline {
                     echo 'Check website is up'
                     sudo su ec2-user
                     whoami
-                    sudo -u ec2-user ansible all -i ${params.web-app-ip}, -b -m copy -a "src=$PlayGround/webapp/ dest=/var/www/html/"
+                    sudo -u ec2-user ansible all -i ${params.web_app_ip}, -b -m copy -a "src=$PlayGround/webapp/ dest=/var/www/html/"
                     """.stripIndent()
             }
         }
